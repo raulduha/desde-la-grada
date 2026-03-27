@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls \"C:\\\\Users\\\\rauld\\\\OneDrive\\\\Escritorio\\\\DLG/app/\\(store\\)\")",
+      "mcp__stitch__list_projects",
+      "mcp__stitch__list_screens",
+      "Bash(curl:*)",
+      "Bash(python3:*)",
+      "Bash(npm run:*)",
+      "Bash(npx tsc:*)",
+      "Bash(gh auth:*)",
+      "Bash(git --version)",
+      "Bash(echo $GITHUB_TOKEN)",
+      "Bash(git config:*)"
+    ]
+  }
+}
