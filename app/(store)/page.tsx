@@ -3,7 +3,7 @@ import { DEFAULT_LANDING, LandingContent } from '@/types/landing'
 import Image from 'next/image'
 import Link from 'next/link'
 
-export const revalidate = 0
+export const dynamic = 'force-dynamic'
 
 export const metadata = {
   title: 'DLG — Desde la Grada',

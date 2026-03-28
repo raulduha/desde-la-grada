@@ -106,6 +106,7 @@ export default function LandingEditorPage() {
   const [content, setContent] = useState<LandingContent>(DEFAULT_LANDING)
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
+  const [saveError, setSaveError] = useState('')
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -125,16 +126,22 @@ export default function LandingEditorPage() {
   const handleSave = async () => {
     setSaving(true)
     setSaved(false)
+    setSaveError('')
     try {
       const res = await fetch('/api/admin/landing', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(content),
       })
+      const data = await res.json()
       if (res.ok) {
         setSaved(true)
         setTimeout(() => setSaved(false), 3000)
+      } else {
+        setSaveError(data.error ?? `Error ${res.status}`)
       }
+    } catch (e: any) {
+      setSaveError(e.message)
     } finally {
       setSaving(false)
     }
@@ -178,6 +185,17 @@ export default function LandingEditorPage() {
           <SaveButton saving={saving} saved={saved} onClick={handleSave} />
         </div>
       </div>
+
+      {/* Error banner */}
+      {saveError && (
+        <div className="mb-6 bg-red-900/40 border border-red-500/40 p-4 text-red-400 text-xs uppercase tracking-widest">
+          ✕ Error al guardar: {saveError}
+          <br />
+          <span className="text-red-400/60 normal-case tracking-normal mt-1 block">
+            Verifica que la tabla <code>site_settings</code> exista en Supabase (ejecuta el SQL de supabase-setup.sql)
+          </span>
+        </div>
+      )}
 
       {/* ── HERO ── */}
       <Section title="Hero (Sección Principal)">
