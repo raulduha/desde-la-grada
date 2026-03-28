@@ -1,6 +1,7 @@
 import { supabaseAdmin } from '@/lib/supabase/admin'
 import { NextResponse } from 'next/server'
 import { DEFAULT_LANDING } from '@/types/landing'
+import { revalidatePath } from 'next/cache'
 
 export async function GET() {
   try {
@@ -25,6 +26,9 @@ export async function PUT(req: Request) {
       .upsert({ id: 'landing', content, updated_at: new Date().toISOString() })
 
     if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+
+    // Limpia el caché de Next.js para que el landing muestre los cambios de inmediato
+    revalidatePath('/')
 
     return NextResponse.json({ ok: true })
   } catch (err: any) {
