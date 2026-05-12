@@ -28,11 +28,11 @@ export async function POST(request: NextRequest) {
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const body = await request.json()
-  const { name, slug, description, price, category, cover_image, images, is_active, inventory } = body
+  const { name, slug, description, price, category, cover_image, images, is_active, coming_soon, inventory } = body
 
   const { data: product, error } = await supabaseAdmin
     .from('products')
-    .insert({ name, slug, description, price, category, cover_image, images, is_active })
+    .insert({ name, slug, description, price, category, cover_image, images, is_active, coming_soon: coming_soon ?? false })
     .select()
     .single()
 
