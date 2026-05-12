@@ -75,11 +75,14 @@ export default async function HomePage() {
         {/* Background */}
         {hero.image ? (
           <div className="absolute inset-0">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+            <Image
               src={hero.image}
               alt="Hero DLG"
-              className="w-full h-full object-cover opacity-60 grayscale hover:grayscale-0 transition-all duration-700"
+              fill
+              className="object-cover opacity-60"
+              sizes="100vw"
+              quality={90}
+              priority
             />
             <div className="absolute inset-0 bg-gradient-to-t from-[#0e0e0e] via-[#0e0e0e]/20 to-transparent" />
           </div>
