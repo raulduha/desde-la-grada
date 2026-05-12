@@ -29,6 +29,7 @@ async function getLandingContent(): Promise<LandingContent> {
       return {
         hero: { ...DEFAULT_LANDING.hero, ...data.content.hero },
         editorial: { ...DEFAULT_LANDING.editorial, ...data.content.editorial },
+        about: { ...DEFAULT_LANDING.about, ...data.content.about },
         newsletter: { ...DEFAULT_LANDING.newsletter, ...data.content.newsletter },
       }
     }
@@ -66,7 +67,7 @@ async function getComingSoonProducts() {
 
 export default async function HomePage() {
   const [content, products, comingSoon] = await Promise.all([getLandingContent(), getFeaturedProducts(), getComingSoonProducts()])
-  const { hero, editorial, newsletter } = content
+  const { hero, editorial, about, newsletter } = content
 
   return (
     <div className="bg-[#0e0e0e] text-white">
@@ -418,51 +419,60 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ─── COMPRAR POR DISEÑO ─── */}
-      <section className="bg-[#0e0e0e] py-24 px-6 md:px-12">
-        <h2
-          className="font-black text-4xl uppercase tracking-tighter mb-16 text-center"
-          style={{ fontFamily: 'var(--font-space-grotesk)' }}
-        >
-          Comprar por Diseño
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 border border-white/10">
+      {/* ─── SOBRE NOSOTROS ─── */}
+      <section id="about" className="bg-[#0e0e0e] py-24 md:py-32 px-6 md:px-12 overflow-hidden">
+        {/* Header */}
+        <div className="max-w-3xl mb-20">
+          <p
+            className="text-white/40 text-xs tracking-[0.5em] uppercase font-bold mb-5"
+            style={{ fontFamily: 'var(--font-space-grotesk)' }}
+          >
+            {about.tagline}
+          </p>
+          <h2
+            className="font-black uppercase leading-none tracking-tighter mb-8"
+            style={{
+              fontFamily: 'var(--font-space-grotesk)',
+              fontSize: 'clamp(3rem, 8vw, 6.5rem)',
+            }}
+          >
+            {about.headline}
+          </h2>
+          <p className="text-white/50 text-base md:text-lg leading-relaxed max-w-xl">
+            {about.body}
+          </p>
+        </div>
+
+        {/* Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-white/5">
           {[
-            { num: '01', title: 'Estadio', desc: 'Planos minimalistas y motivos arquitectónicos del concreto.' },
-            { num: '02', title: 'Ultras', desc: 'Tipografía audaz y gráficos de alto contraste.' },
-            { num: '03', title: 'Leyenda', desc: 'Iconos inspirados en la herencia del deporte rey.' },
-          ].map((item, i) => (
-            <Link
+            { num: '01', title: about.item1Title, desc: about.item1Desc },
+            { num: '02', title: about.item2Title, desc: about.item2Desc },
+            { num: '03', title: about.item3Title, desc: about.item3Desc },
+          ].map((item) => (
+            <div
               key={item.num}
-              href="/tienda"
-              className={`p-10 md:p-12 flex flex-col justify-between hover:bg-[#131313] transition-colors group min-h-[300px] md:min-h-[360px] ${
-                i < 2 ? 'border-b md:border-b-0 md:border-r border-white/10' : ''
-              }`}
+              className="bg-[#0e0e0e] p-10 md:p-12 flex flex-col gap-8 group hover:bg-[#131313] transition-colors"
             >
               <span
-                className="font-black text-7xl text-white/[0.04] group-hover:text-white/[0.07] transition-colors"
+                className="font-black text-[6rem] leading-none text-white/[0.04] group-hover:text-white/[0.07] transition-colors select-none"
                 style={{ fontFamily: 'var(--font-space-grotesk)' }}
               >
                 {item.num}
               </span>
               <div>
+                <div className="w-8 h-px bg-white/20 mb-6 group-hover:w-16 transition-all duration-500" />
                 <h3
-                  className="font-black text-3xl uppercase italic mb-4"
+                  className="font-black text-xl md:text-2xl uppercase italic tracking-tight mb-4 text-white"
                   style={{ fontFamily: 'var(--font-space-grotesk)' }}
                 >
                   {item.title}
                 </h3>
-                <p className="text-white/35 text-xs uppercase tracking-widest mb-8 leading-relaxed">
+                <p className="text-white/40 text-sm leading-relaxed">
                   {item.desc}
                 </p>
-                <span
-                  className="text-white/60 text-xs uppercase tracking-widest font-bold group-hover:translate-x-1 inline-block transition-transform"
-                  style={{ fontFamily: 'var(--font-space-grotesk)' }}
-                >
-                  Explorar →
-                </span>
               </div>
-            </Link>
+            </div>
           ))}
         </div>
       </section>

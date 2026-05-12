@@ -124,6 +124,7 @@ export default function LandingEditorPage() {
         setContent({
           hero: { ...DEFAULT_LANDING.hero, ...data.hero },
           editorial: { ...DEFAULT_LANDING.editorial, ...data.editorial },
+          about: { ...DEFAULT_LANDING.about, ...data.about },
           newsletter: { ...DEFAULT_LANDING.newsletter, ...data.newsletter },
         })
         setLoading(false)
@@ -160,6 +161,9 @@ export default function LandingEditorPage() {
 
   const updateEditorial = (key: keyof LandingContent['editorial'], value: string) =>
     setContent((p) => ({ ...p, editorial: { ...p.editorial, [key]: value } }))
+
+  const updateAbout = (key: keyof LandingContent['about'], value: string) =>
+    setContent((p) => ({ ...p, about: { ...p.about, [key]: value } }))
 
   const updateNewsletter = (key: keyof LandingContent['newsletter'], value: string) =>
     setContent((p) => ({ ...p, newsletter: { ...p.newsletter, [key]: value } }))
@@ -272,6 +276,59 @@ export default function LandingEditorPage() {
           label="Badge esquina (fondo verde)"
           value={content.editorial.badgeText}
           onChange={(v) => updateEditorial('badgeText', v)}
+        />
+      </Section>
+
+      {/* ── SOBRE NOSOTROS ── */}
+      <Section title="Sobre Nosotros">
+        <TextField
+          label="Tagline (texto pequeño arriba)"
+          value={content.about.tagline}
+          onChange={(v) => updateAbout('tagline', v)}
+        />
+        <TextField
+          label="Titular principal"
+          value={content.about.headline}
+          onChange={(v) => updateAbout('headline', v)}
+        />
+        <TextField
+          label="Texto introductorio"
+          value={content.about.body}
+          onChange={(v) => updateAbout('body', v)}
+          multiline
+        />
+        <TextField
+          label="Card 01 — Título"
+          value={content.about.item1Title}
+          onChange={(v) => updateAbout('item1Title', v)}
+        />
+        <TextField
+          label="Card 01 — Descripción"
+          value={content.about.item1Desc}
+          onChange={(v) => updateAbout('item1Desc', v)}
+          multiline
+        />
+        <TextField
+          label="Card 02 — Título"
+          value={content.about.item2Title}
+          onChange={(v) => updateAbout('item2Title', v)}
+        />
+        <TextField
+          label="Card 02 — Descripción"
+          value={content.about.item2Desc}
+          onChange={(v) => updateAbout('item2Desc', v)}
+          multiline
+        />
+        <TextField
+          label="Card 03 — Título"
+          value={content.about.item3Title}
+          onChange={(v) => updateAbout('item3Title', v)}
+        />
+        <TextField
+          label="Card 03 — Descripción"
+          value={content.about.item3Desc}
+          onChange={(v) => updateAbout('item3Desc', v)}
+          multiline
         />
       </Section>
 
