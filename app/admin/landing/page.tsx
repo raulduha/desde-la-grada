@@ -26,8 +26,16 @@ function ImageUploadField({
       const form = new FormData()
       form.append('file', file)
       const res = await fetch('/api/admin/upload', { method: 'POST', body: form })
+      if (!res.ok) {
+        const text = await res.text()
+        let msg = 'Error al subir'
+        try { msg = JSON.parse(text).error ?? msg } catch {
+          if (res.status === 413) msg = 'Imagen demasiado grande (máx 20MB)'
+          else msg = `Error ${res.status}`
+        }
+        throw new Error(msg)
+      }
       const data = await res.json()
-      if (!res.ok) throw new Error(data.error ?? 'Error al subir')
       onChange(data.url)
     } catch (e: any) {
       setError(e.message)

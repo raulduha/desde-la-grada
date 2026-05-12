@@ -26,7 +26,7 @@ export default function NavBar() {
         <div className="flex items-center gap-10">
           <Link
             href="/"
-            className="text-3xl font-black italic tracking-tighter text-white hover:text-[#00FF00] transition-colors"
+            className="text-3xl font-black italic tracking-tighter text-white hover:text-white/70 transition-colors"
             style={{ fontFamily: 'var(--font-space-grotesk)' }}
           >
             DLG
@@ -75,7 +75,7 @@ export default function NavBar() {
               <path d="M16 10a4 4 0 01-8 0" />
             </svg>
             {totalItems() > 0 && (
-              <span className="absolute top-1 right-1 w-2 h-2 bg-[#00FF00]" />
+              <span className="absolute top-1 right-1 w-2 h-2 bg-white" />
             )}
           </Link>
 

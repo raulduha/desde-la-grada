@@ -50,8 +50,22 @@ async function getFeaturedProducts() {
   }
 }
 
+async function getComingSoonProducts() {
+  try {
+    const { data } = await supabaseAdmin
+      .from('products')
+      .select('id, name, price, cover_image')
+      .eq('coming_soon', true)
+      .order('created_at', { ascending: false })
+      .limit(4)
+    return data ?? []
+  } catch {
+    return []
+  }
+}
+
 export default async function HomePage() {
-  const [content, products] = await Promise.all([getLandingContent(), getFeaturedProducts()])
+  const [content, products, comingSoon] = await Promise.all([getLandingContent(), getFeaturedProducts(), getComingSoonProducts()])
   const { hero, editorial, newsletter } = content
 
   return (
@@ -85,7 +99,7 @@ export default async function HomePage() {
         <div className="relative z-10 px-6 md:px-12 pb-16 md:pb-24 w-full">
           <div className="max-w-5xl">
             <p
-              className="text-[#00FF00] text-xs tracking-[0.35em] mb-5 uppercase font-bold"
+              className="text-white/50 text-xs tracking-[0.35em] mb-5 uppercase font-bold"
               style={{ fontFamily: 'var(--font-space-grotesk)' }}
             >
               {hero.tagline}
@@ -99,13 +113,13 @@ export default async function HomePage() {
             >
               {hero.headline}
               <br />
-              <span className="text-[#00FF00]">{hero.accentWord}</span>
+              <span className="text-white/80">{hero.accentWord}</span>
             </h1>
 
             <div className="flex flex-col md:flex-row md:items-center gap-8">
               <Link
                 href="/tienda"
-                className="bg-white text-black px-10 py-5 font-black uppercase tracking-widest text-sm hover:bg-[#00FF00] transition-colors inline-block"
+                className="bg-white text-black px-10 py-5 font-black uppercase tracking-widest text-sm hover:bg-zinc-200 transition-colors inline-block"
                 style={{ fontFamily: 'var(--font-space-grotesk)' }}
               >
                 {hero.ctaText}
@@ -144,7 +158,7 @@ export default async function HomePage() {
           </div>
           <Link
             href="/tienda"
-            className="text-[#00FF00] text-sm uppercase tracking-widest border-b-2 border-[#00FF00] pb-1 hover:text-white hover:border-white transition-colors hidden sm:block"
+            className="text-white/60 text-sm uppercase tracking-widest border-b-2 border-white/30 pb-1 hover:text-white hover:border-white transition-colors hidden sm:block"
             style={{ fontFamily: 'var(--font-space-grotesk)' }}
           >
             Ver todo
@@ -163,22 +177,22 @@ export default async function HomePage() {
                   src={products[0].cover_image}
                   alt={products[0].name}
                   fill
-                  className="object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700"
+                  className="object-cover group-hover:scale-105 transition-all duration-700"
                 />
               )}
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
               <div className="absolute bottom-0 left-0 w-full p-8">
-                <span className="bg-[#00FF00] text-black px-3 py-1 text-[10px] font-black uppercase tracking-widest mb-4 inline-block">
+                <span className="bg-white/15 backdrop-blur-sm text-white px-3 py-1 text-[10px] font-black uppercase tracking-widest mb-4 inline-block border border-white/20">
                   Nuevo
                 </span>
                 <h3
-                  className="font-bold text-2xl md:text-3xl uppercase text-white leading-tight"
+                  className="font-bold text-2xl md:text-3xl uppercase text-white leading-tight drop-shadow-lg"
                   style={{ fontFamily: 'var(--font-space-grotesk)' }}
                 >
                   {products[0].name}
                 </h3>
                 <p
-                  className="text-[#00FF00] text-lg mt-2"
+                  className="text-white/75 text-lg mt-2 font-semibold"
                   style={{ fontFamily: 'var(--font-space-grotesk)' }}
                 >
                   {formatCLP(products[0].price)}
@@ -202,7 +216,7 @@ export default async function HomePage() {
                   src={products[1].cover_image}
                   alt={products[1].name}
                   fill
-                  className="object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700"
+                  className="object-cover group-hover:scale-105 transition-all duration-700"
                 />
               )}
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
@@ -231,7 +245,7 @@ export default async function HomePage() {
                   src={products[2].cover_image}
                   alt={products[2].name}
                   fill
-                  className="object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700"
+                  className="object-cover group-hover:scale-105 transition-all duration-700"
                 />
               )}
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
@@ -265,7 +279,7 @@ export default async function HomePage() {
               >
                 Únete a los Ultras
               </h3>
-              <p className="text-xs uppercase tracking-[0.4em] text-[#00FF00] mb-6">
+              <p className="text-xs uppercase tracking-[0.4em] text-white/50 mb-6">
                 Lanzamientos exclusivos para miembros
               </p>
               <Link
@@ -280,11 +294,66 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* ─── PRÓXIMAMENTE ─── */}
+      {comingSoon.length > 0 && (
+        <section className="bg-[#131313] py-20 px-6 md:px-12">
+          <div className="flex items-end justify-between mb-12">
+            <div>
+              <p className="text-white/40 text-xs tracking-[0.5em] uppercase font-bold mb-3">Muy pronto</p>
+              <h2
+                className="font-black text-4xl md:text-5xl uppercase tracking-tighter"
+                style={{ fontFamily: 'var(--font-space-grotesk)' }}
+              >
+                Próximamente
+              </h2>
+            </div>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {comingSoon.map((product) => (
+              <div key={product.id} className="group relative overflow-hidden bg-[#0e0e0e]">
+                <div className="aspect-square relative overflow-hidden">
+                  {product.cover_image ? (
+                    <Image
+                      src={product.cover_image}
+                      alt={product.name}
+                      fill
+                      className="object-cover opacity-25 blur-[3px] scale-110"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-white/5" />
+                  )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#131313] via-black/20 to-transparent" />
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <span
+                      className="text-white/50 text-[10px] font-black uppercase tracking-[0.4em] border border-white/15 px-3 py-1.5 backdrop-blur-sm bg-black/20"
+                      style={{ fontFamily: 'var(--font-space-grotesk)' }}
+                    >
+                      Próx.
+                    </span>
+                  </div>
+                </div>
+                <div className="p-4">
+                  <p
+                    className="font-black uppercase text-sm leading-tight text-white/60"
+                    style={{ fontFamily: 'var(--font-space-grotesk)' }}
+                  >
+                    {product.name}
+                  </p>
+                  <p className="text-white/30 text-xs mt-1 font-semibold">
+                    {formatCLP(product.price)}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
       {/* ─── EDITORIAL ─── */}
       <section className="bg-[#131313] py-24 md:py-32 flex flex-col md:flex-row overflow-hidden">
         <div className="w-full md:w-1/2 px-6 md:px-12 flex flex-col justify-center py-16 md:py-0">
           <span
-            className="text-[#00FF00] text-xs tracking-[0.5em] uppercase mb-6 font-bold"
+            className="text-white/50 text-xs tracking-[0.5em] uppercase mb-6 font-bold"
             style={{ fontFamily: 'var(--font-space-grotesk)' }}
           >
             {editorial.tagline}
@@ -306,7 +375,7 @@ export default async function HomePage() {
           <div className="flex gap-4 flex-wrap">
             <Link
               href="/tienda"
-              className="bg-white text-black px-8 py-4 font-black uppercase tracking-widest text-sm hover:bg-[#00FF00] transition-colors"
+              className="bg-white text-black px-8 py-4 font-black uppercase tracking-widest text-sm hover:bg-zinc-200 transition-colors"
               style={{ fontFamily: 'var(--font-space-grotesk)' }}
             >
               Comprar Colección
@@ -335,7 +404,7 @@ export default async function HomePage() {
             </div>
           )}
           <div
-            className="absolute top-8 left-0 bg-[#00FF00] px-5 py-3 text-black font-black text-lg uppercase italic -rotate-1 tracking-tighter z-10"
+            className="absolute top-8 left-0 bg-white px-5 py-3 text-black font-black text-lg uppercase italic -rotate-1 tracking-tighter z-10"
             style={{ fontFamily: 'var(--font-space-grotesk)' }}
           >
             {editorial.badgeText}
@@ -365,7 +434,7 @@ export default async function HomePage() {
               }`}
             >
               <span
-                className="font-black text-7xl text-white/[0.04] group-hover:text-[#00FF00]/10 transition-colors"
+                className="font-black text-7xl text-white/[0.04] group-hover:text-white/[0.07] transition-colors"
                 style={{ fontFamily: 'var(--font-space-grotesk)' }}
               >
                 {item.num}
@@ -381,7 +450,7 @@ export default async function HomePage() {
                   {item.desc}
                 </p>
                 <span
-                  className="text-[#00FF00] text-xs uppercase tracking-widest font-bold group-hover:translate-x-1 inline-block transition-transform"
+                  className="text-white/60 text-xs uppercase tracking-widest font-bold group-hover:translate-x-1 inline-block transition-transform"
                   style={{ fontFamily: 'var(--font-space-grotesk)' }}
                 >
                   Explorar →
@@ -410,7 +479,7 @@ export default async function HomePage() {
             }}
           >
             {newsletter.headline}{' '}
-            <span className="text-[#00FF00]">{newsletter.accentWord}</span>
+            <span className="text-white">{newsletter.accentWord}</span>
           </h2>
           <p className="text-xs uppercase tracking-[0.4em] text-white/35 mb-12">
             {newsletter.subtext}
@@ -419,12 +488,12 @@ export default async function HomePage() {
             <input
               type="email"
               placeholder="TU CORREO ELECTRÓNICO"
-              className="flex-grow bg-[#262626] border-none p-5 md:p-6 uppercase tracking-widest text-xs text-white focus:outline-none focus:ring-2 focus:ring-[#00FF00]"
+              className="flex-grow bg-[#262626] border-none p-5 md:p-6 uppercase tracking-widest text-xs text-white focus:outline-none focus:ring-2 focus:ring-white/30"
               style={{ fontFamily: 'var(--font-space-grotesk)' }}
             />
             <button
               type="submit"
-              className="bg-white text-black px-10 md:px-12 py-5 md:py-6 font-black uppercase tracking-widest text-xs hover:bg-[#00FF00] transition-colors"
+              className="bg-white text-black px-10 md:px-12 py-5 md:py-6 font-black uppercase tracking-widest text-xs hover:bg-zinc-200 transition-colors"
               style={{ fontFamily: 'var(--font-space-grotesk)' }}
             >
               Unirse al Equipo

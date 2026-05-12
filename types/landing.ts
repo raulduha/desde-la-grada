@@ -24,7 +24,7 @@ export interface LandingContent {
 
 export const DEFAULT_LANDING: LandingContent = {
   hero: {
-    image: '',
+    image: '/landing.png',
     tagline: 'Est. 2024 — Cultura de Grada',
     headline: 'DESDE LA',
     accentWord: 'GRADA',

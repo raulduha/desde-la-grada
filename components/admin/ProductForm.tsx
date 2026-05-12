@@ -34,6 +34,7 @@ export default function ProductForm({ product }: ProductFormProps) {
   const [price, setPrice] = useState(product?.price?.toString() ?? '')
   const [category, setCategory] = useState(product?.category ?? 'General')
   const [isActive, setIsActive] = useState(product?.is_active ?? true)
+  const [comingSoon, setComingSoon] = useState(product?.coming_soon ?? false)
   const [coverImage, setCoverImage] = useState(product?.cover_image ?? '')
   const [images, setImages] = useState<string[]>(product?.images ?? [])
   const [inventory, setInventory] = useState<InventoryInput[]>(
@@ -60,8 +61,16 @@ export default function ProductForm({ product }: ProductFormProps) {
     const fd = new FormData()
     fd.append('file', file)
     const res = await fetch('/api/admin/upload', { method: 'POST', body: fd })
+    if (!res.ok) {
+      const text = await res.text()
+      let msg = 'Error al subir'
+      try { msg = JSON.parse(text).error ?? msg } catch {
+        if (res.status === 413) msg = 'Imagen demasiado grande (máx 20MB)'
+        else msg = `Error ${res.status}`
+      }
+      throw new Error(msg)
+    }
     const data = await res.json()
-    if (!res.ok) throw new Error(data.error || 'Upload failed')
     return data.url
   }
 
@@ -107,6 +116,7 @@ export default function ProductForm({ product }: ProductFormProps) {
       cover_image: coverImage,
       images,
       is_active: isActive,
+      coming_soon: comingSoon,
       inventory,
     }
 
@@ -173,8 +183,8 @@ export default function ProductForm({ product }: ProductFormProps) {
         />
       </div>
 
-      {/* Price + Category + Status */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {/* Price + Category */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <label className={labelClass}>Precio (CLP) *</label>
           <input
@@ -199,20 +209,49 @@ export default function ProductForm({ product }: ProductFormProps) {
             ))}
           </select>
         </div>
-        <div>
-          <label className={labelClass}>Estado</label>
+      </div>
+
+      {/* Estado */}
+      <div>
+        <label className={labelClass}>Estado del producto</label>
+        <div className="grid grid-cols-3 gap-3">
           <button
             type="button"
-            onClick={() => setIsActive(v => !v)}
-            className={`w-full py-3 px-4 text-sm font-black uppercase tracking-widest transition-colors ${
-              isActive
-                ? 'bg-[#00FF00]/10 text-[#00FF00] border border-[#00FF00]/30 hover:bg-[#00FF00]/20'
-                : 'bg-white/5 text-white/30 border border-white/20 hover:bg-white/10'
+            onClick={() => { setIsActive(true); setComingSoon(false) }}
+            className={`py-3 px-4 text-sm font-black uppercase tracking-widest transition-colors border ${
+              isActive && !comingSoon
+                ? 'bg-[#00FF00]/10 text-[#00FF00] border-[#00FF00]/30'
+                : 'bg-white/5 text-white/30 border-white/10 hover:bg-white/10'
             }`}
           >
-            {isActive ? '● Activo' : '○ Inactivo'}
+            ● Activo
+          </button>
+          <button
+            type="button"
+            onClick={() => { setIsActive(false); setComingSoon(false) }}
+            className={`py-3 px-4 text-sm font-black uppercase tracking-widest transition-colors border ${
+              !isActive && !comingSoon
+                ? 'bg-white/10 text-white border-white/30'
+                : 'bg-white/5 text-white/30 border-white/10 hover:bg-white/10'
+            }`}
+          >
+            ○ Inactivo
+          </button>
+          <button
+            type="button"
+            onClick={() => { setIsActive(false); setComingSoon(true) }}
+            className={`py-3 px-4 text-sm font-black uppercase tracking-widest transition-colors border ${
+              comingSoon
+                ? 'bg-white/10 text-white border-white/40'
+                : 'bg-white/5 text-white/30 border-white/10 hover:bg-white/10'
+            }`}
+          >
+            ◷ Próximamente
           </button>
         </div>
+        {comingSoon && (
+          <p className="text-white/30 text-xs mt-2">Se mostrará en el sitio como vista previa. No estará disponible para compra.</p>
+        )}
       </div>
 
       {/* Cover Image */}

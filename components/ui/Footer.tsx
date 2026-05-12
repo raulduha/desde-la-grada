@@ -100,7 +100,7 @@ export default function Footer() {
             </div>
             <Link
               href="/carrito"
-              className="bg-white text-black px-6 py-3 font-black uppercase tracking-widest text-xs hover:bg-[#00FF00] transition-colors"
+              className="bg-white text-black px-6 py-3 font-black uppercase tracking-widest text-xs hover:bg-zinc-200 transition-colors"
               style={{ fontFamily: 'var(--font-space-grotesk)' }}
             >
               Ir al carrito

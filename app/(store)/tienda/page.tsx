@@ -19,17 +19,24 @@ function formatPrice(n: number) {
 }
 
 export default async function TiendaPage() {
-  const { data: products } = await supabaseAdmin
-    .from('products')
-    .select('*, inventory(*)')
-    .eq('is_active', true)
-    .order('created_at', { ascending: false })
+  const [{ data: products }, { data: comingSoon }] = await Promise.all([
+    supabaseAdmin
+      .from('products')
+      .select('*, inventory(*)')
+      .eq('is_active', true)
+      .order('created_at', { ascending: false }),
+    supabaseAdmin
+      .from('products')
+      .select('id, name, slug, price, cover_image')
+      .eq('coming_soon', true)
+      .order('created_at', { ascending: false }),
+  ])
 
   return (
     <div className="bg-[#0e0e0e] min-h-screen">
       {/* Header */}
       <div className="border-b border-white/10 px-6 md:px-12 py-12">
-        <p className="text-[#00FF00] text-xs tracking-[0.5em] uppercase font-bold mb-3">
+        <p className="text-white/50 text-xs tracking-[0.5em] uppercase font-bold mb-3">
           Colección
         </p>
         <h1
@@ -42,6 +49,62 @@ export default async function TiendaPage() {
           {products?.length ?? 0} producto{(products?.length ?? 0) !== 1 ? 's' : ''}
         </p>
       </div>
+
+      {/* Próximamente */}
+      {comingSoon && comingSoon.length > 0 && (
+        <div className="px-6 md:px-12 py-12 border-b border-white/10">
+          <div className="flex items-end justify-between mb-8">
+            <div>
+              <p className="text-white/40 text-xs tracking-[0.5em] uppercase font-bold mb-2">Muy pronto</p>
+              <h2
+                className="text-3xl md:text-4xl font-black uppercase tracking-tighter"
+                style={{ fontFamily: 'var(--font-space-grotesk)' }}
+              >
+                Próximamente
+              </h2>
+            </div>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-px bg-white/5">
+            {comingSoon.map((product) => (
+              <div key={product.id} className="bg-[#0e0e0e] relative overflow-hidden">
+                <div className="aspect-square bg-white/5 overflow-hidden relative">
+                  {product.cover_image ? (
+                    <Image
+                      src={product.cover_image}
+                      alt={product.name}
+                      fill
+                      className="object-cover opacity-30 blur-sm scale-110"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center">
+                      <span className="text-white/10 text-xs uppercase tracking-widest">DLG</span>
+                    </div>
+                  )}
+                  <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                    <span
+                      className="text-white/60 text-[10px] font-black uppercase tracking-[0.4em] border border-white/20 px-3 py-1.5"
+                      style={{ fontFamily: 'var(--font-space-grotesk)' }}
+                    >
+                      Próx.
+                    </span>
+                  </div>
+                </div>
+                <div className="p-4">
+                  <p
+                    className="font-black uppercase text-sm leading-tight text-white/60"
+                    style={{ fontFamily: 'var(--font-space-grotesk)' }}
+                  >
+                    {product.name}
+                  </p>
+                  <p className="text-white/30 text-sm font-semibold mt-1">
+                    {formatPrice(product.price)}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Grid */}
       <div className="px-6 md:px-12 py-12">
@@ -72,7 +135,7 @@ export default async function TiendaPage() {
                         src={product.cover_image}
                         alt={product.name}
                         fill
-                        className="object-cover grayscale group-hover:grayscale-0 transition-all duration-500 group-hover:scale-105"
+                        className="object-cover transition-all duration-500 group-hover:scale-105"
                       />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center">
@@ -96,12 +159,12 @@ export default async function TiendaPage() {
                   {/* Info */}
                   <div className="p-4">
                     <p
-                      className="font-black uppercase text-sm leading-tight group-hover:text-[#00FF00] transition-colors"
+                      className="font-black uppercase text-sm leading-tight text-white group-hover:text-white/90 transition-colors"
                       style={{ fontFamily: 'var(--font-space-grotesk)' }}
                     >
                       {product.name}
                     </p>
-                    <p className="text-white/50 text-sm font-bold mt-1">
+                    <p className="text-white/70 text-sm font-semibold mt-1">
                       {formatPrice(product.price)}
                     </p>
 

@@ -46,7 +46,7 @@ export default function ProductoDetallePage() {
     return (
       <div className="bg-[#0e0e0e] min-h-screen flex flex-col items-center justify-center gap-4">
         <p className="text-white/30 text-sm uppercase tracking-widest">Producto no encontrado</p>
-        <Link href="/tienda" className="text-[#00FF00] text-xs uppercase tracking-widest hover:text-white transition-colors">
+        <Link href="/tienda" className="text-white/50 text-xs uppercase tracking-widest hover:text-white transition-colors">
           ← Volver a la tienda
         </Link>
       </div>
@@ -107,7 +107,7 @@ export default function ProductoDetallePage() {
                   key={i}
                   onClick={() => setSelectedImage(i)}
                   className={`w-16 h-16 relative overflow-hidden border transition-colors ${
-                    selectedImage === i ? 'border-[#00FF00]' : 'border-white/20 hover:border-white/50'
+                    selectedImage === i ? 'border-white' : 'border-white/20 hover:border-white/50'
                   }`}
                 >
                   <Image src={img} alt={`img-${i}`} fill className="object-cover" />
@@ -158,7 +158,7 @@ export default function ProductoDetallePage() {
                       disabled={!available}
                       className={`w-14 h-14 text-sm font-black uppercase border transition-colors ${
                         selected
-                          ? 'border-[#00FF00] bg-[#00FF00] text-black'
+                          ? 'border-white bg-white text-black'
                           : available
                           ? 'border-white/30 text-white hover:border-white'
                           : 'border-white/10 text-white/15 cursor-not-allowed line-through'

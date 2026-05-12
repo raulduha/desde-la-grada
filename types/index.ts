@@ -8,6 +8,7 @@ export interface Product {
   cover_image: string
   images: string[]
   is_active: boolean
+  coming_soon: boolean
   created_at: string
   updated_at: string
   inventory?: InventoryItem[]

@@ -12,12 +12,12 @@ export default function CarritoPage() {
         className="absolute inset-0 opacity-5"
         style={{
           backgroundImage:
-            'repeating-linear-gradient(0deg, #00FF00 0px, #00FF00 1px, transparent 1px, transparent 80px), repeating-linear-gradient(90deg, #00FF00 0px, #00FF00 1px, transparent 1px, transparent 80px)',
+            'repeating-linear-gradient(0deg, #ffffff 0px, #ffffff 1px, transparent 1px, transparent 80px), repeating-linear-gradient(90deg, #ffffff 0px, #ffffff 1px, transparent 1px, transparent 80px)',
         }}
       />
 
       <div className="relative z-10 text-center max-w-2xl mx-auto">
-        <p className="text-[#00FF00] text-xs tracking-[0.5em] uppercase font-bold mb-6">
+        <p className="text-white/50 text-xs tracking-[0.5em] uppercase font-bold mb-6">
           Carrito
         </p>
 
@@ -28,7 +28,7 @@ export default function CarritoPage() {
           PRÓXIMA<br />MENTE
         </h1>
 
-        <div className="mt-4 w-16 h-1 bg-[#00FF00] mx-auto" />
+        <div className="mt-4 w-16 h-1 bg-white/30 mx-auto" />
 
         <p className="mt-10 text-white/50 text-base max-w-sm mx-auto leading-relaxed">
           El sistema de compra estará disponible muy pronto.
@@ -37,7 +37,7 @@ export default function CarritoPage() {
         <div className="mt-10">
           <Link
             href="/tienda"
-            className="bg-[#00FF00] text-black font-black uppercase tracking-widest px-8 py-4 text-sm hover:bg-white transition-colors"
+            className="bg-white text-black font-black uppercase tracking-widest px-8 py-4 text-sm hover:bg-zinc-200 transition-colors"
           >
             Ver Tienda
           </Link>
@@ -45,10 +45,10 @@ export default function CarritoPage() {
       </div>
 
       {/* Corner accents */}
-      <div className="absolute top-8 left-8 w-12 h-12 border-t-2 border-l-2 border-[#00FF00]/30" />
-      <div className="absolute top-8 right-8 w-12 h-12 border-t-2 border-r-2 border-[#00FF00]/30" />
-      <div className="absolute bottom-8 left-8 w-12 h-12 border-b-2 border-l-2 border-[#00FF00]/30" />
-      <div className="absolute bottom-8 right-8 w-12 h-12 border-b-2 border-r-2 border-[#00FF00]/30" />
+      <div className="absolute top-8 left-8 w-12 h-12 border-t-2 border-l-2 border-white/20" />
+      <div className="absolute top-8 right-8 w-12 h-12 border-t-2 border-r-2 border-white/20" />
+      <div className="absolute bottom-8 left-8 w-12 h-12 border-b-2 border-l-2 border-white/20" />
+      <div className="absolute bottom-8 right-8 w-12 h-12 border-b-2 border-r-2 border-white/20" />
     </div>
   )
 }
