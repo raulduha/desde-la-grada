@@ -67,7 +67,7 @@ async function getComingSoonProducts() {
 
 export default async function HomePage() {
   const [content, products, comingSoon] = await Promise.all([getLandingContent(), getFeaturedProducts(), getComingSoonProducts()])
-  const { hero, editorial, about, newsletter } = content
+  const { hero, editorial, newsletter } = content
 
   return (
     <div className="bg-[#0e0e0e] text-white">
@@ -419,63 +419,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ─── SOBRE NOSOTROS ─── */}
-      <section id="about" className="bg-[#0e0e0e] py-24 md:py-32 px-6 md:px-12 overflow-hidden">
-        {/* Header */}
-        <div className="max-w-3xl mb-20">
-          <p
-            className="text-white/40 text-xs tracking-[0.5em] uppercase font-bold mb-5"
-            style={{ fontFamily: 'var(--font-space-grotesk)' }}
-          >
-            {about.tagline}
-          </p>
-          <h2
-            className="font-black uppercase leading-none tracking-tighter mb-8"
-            style={{
-              fontFamily: 'var(--font-space-grotesk)',
-              fontSize: 'clamp(3rem, 8vw, 6.5rem)',
-            }}
-          >
-            {about.headline}
-          </h2>
-          <p className="text-white/50 text-base md:text-lg leading-relaxed max-w-xl">
-            {about.body}
-          </p>
-        </div>
-
-        {/* Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-white/5">
-          {[
-            { num: '01', title: about.item1Title, desc: about.item1Desc },
-            { num: '02', title: about.item2Title, desc: about.item2Desc },
-            { num: '03', title: about.item3Title, desc: about.item3Desc },
-          ].map((item) => (
-            <div
-              key={item.num}
-              className="bg-[#0e0e0e] p-10 md:p-12 flex flex-col gap-8 group hover:bg-[#131313] transition-colors"
-            >
-              <span
-                className="font-black text-[6rem] leading-none text-white/[0.04] group-hover:text-white/[0.07] transition-colors select-none"
-                style={{ fontFamily: 'var(--font-space-grotesk)' }}
-              >
-                {item.num}
-              </span>
-              <div>
-                <div className="w-8 h-px bg-white/20 mb-6 group-hover:w-16 transition-all duration-500" />
-                <h3
-                  className="font-black text-xl md:text-2xl uppercase italic tracking-tight mb-4 text-white"
-                  style={{ fontFamily: 'var(--font-space-grotesk)' }}
-                >
-                  {item.title}
-                </h3>
-                <p className="text-white/40 text-sm leading-relaxed">
-                  {item.desc}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
 
       {/* ─── NEWSLETTER ─── */}
       <section className="bg-black py-32 px-6 md:px-12 text-center relative overflow-hidden">
