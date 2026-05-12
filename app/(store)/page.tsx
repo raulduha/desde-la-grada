@@ -170,7 +170,7 @@ export default async function HomePage() {
           {products[0] ? (
             <Link
               href={`/tienda/${products[0].slug}`}
-              className="md:col-span-2 md:row-span-2 bg-[#131313] group overflow-hidden relative min-h-[300px]"
+              className="md:col-span-2 md:row-span-2 bg-[#131313] group overflow-hidden relative min-h-[300px] md:h-full"
             >
               {products[0].cover_image && (
                 <Image
@@ -178,7 +178,8 @@ export default async function HomePage() {
                   alt={products[0].name}
                   fill
                   className="object-cover group-hover:scale-105 transition-all duration-700"
-                  sizes="(max-width: 768px) 100vw, 50vw"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 700px"
+                  quality={90}
                   priority
                 />
               )}
